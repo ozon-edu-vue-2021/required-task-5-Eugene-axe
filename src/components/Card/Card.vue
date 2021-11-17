@@ -68,10 +68,11 @@ export default {
   },
   computed: {
     ...mapState({
-      counter: function (state) {
-        return state.cart[this.product.id];
-      },
+      cart: "cart",
     }),
+    counter() {
+      return this.cart[this.product.id];
+    },
     imagePath() {
       return require(`../../assets/images/${
         this.product.image ? this.product.image : "6123150777.webp"
