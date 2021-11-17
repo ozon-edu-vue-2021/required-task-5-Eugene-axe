@@ -52,7 +52,6 @@ import {
   UPDATE_PRODUCT_COUNTER,
 } from "../../constants/store_mutations";
 import { mapMutations, mapState } from "vuex";
-import { CART } from "../../constants/store_state";
 
 export default {
   name: "Card",
@@ -70,7 +69,7 @@ export default {
   computed: {
     ...mapState({
       counter: function (state) {
-        return state[CART][this.product.id];
+        return state.cart[this.product.id];
       },
     }),
     imagePath() {
@@ -83,12 +82,15 @@ export default {
     },
   },
   methods: {
-    ...mapMutations([IS_FAVORITE_PRODUCT, UPDATE_PRODUCT_COUNTER]),
+    ...mapMutations({
+      isFavoriteProduct: IS_FAVORITE_PRODUCT,
+      updateProductCounter: UPDATE_PRODUCT_COUNTER,
+    }),
     changeProductCounter(increment) {
-      this[UPDATE_PRODUCT_COUNTER]({ id: this.product.id, increment });
+      this.updateProductCounter({ id: this.product.id, increment });
     },
     toggleFavorite() {
-      this[IS_FAVORITE_PRODUCT](this.product.id);
+      this.isFavoriteProduct(this.product.id);
     },
   },
 };

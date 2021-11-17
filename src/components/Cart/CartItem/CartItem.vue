@@ -38,7 +38,7 @@ import {
   DELETE_PRODUCT_FROM_CART,
   UPDATE_PRODUCT_COUNTER,
 } from "../../../constants/store_mutations";
-
+import { mapMutations } from "vuex";
 export default {
   name: "cart-item",
   props: {
@@ -55,14 +55,18 @@ export default {
     },
   },
   methods: {
+    ...mapMutations({
+      updateProductCounter: UPDATE_PRODUCT_COUNTER,
+      deleteProductFromCart: DELETE_PRODUCT_FROM_CART,
+    }),
     changeProductCounter(increment, id) {
-      this.$store.commit(UPDATE_PRODUCT_COUNTER, {
+      this.updateProductCounter({
         id,
         increment,
       });
     },
     deleteProduct(product) {
-      this.$store.commit(DELETE_PRODUCT_FROM_CART, product.id);
+      this.deleteProductFromCart(product.id);
     },
   },
 };

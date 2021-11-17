@@ -1,17 +1,21 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <router-link :to="SHOWCASE"><v-btn text> Витрина</v-btn></router-link>
-      <v-divider class="mx-4" vertical></v-divider>
-      <router-link :to="CART"><v-btn text>Корзина</v-btn></router-link>
-      <v-divider class="mx-4" vertical></v-divider>
-      <router-link :to="FAVORITE"><v-btn text>Избранное</v-btn></router-link>
-      <v-divider class="mx-4" vertical></v-divider>
-      <router-link :to="CART" class="ml-auto">
-        <v-btn color="white" icon>
-          <v-icon> mdi-cart-variant </v-icon>
-        </v-btn></router-link
-      >
+      <template v-for="link in links">
+        <div v-if="!link.icon" :key="link.name">
+          <router-link :to="link.path">
+            <v-btn text>{{ link.name }}</v-btn></router-link
+          >
+          <v-divider class="mx-4" vertical></v-divider>
+        </div>
+        <div v-else :key="link.name" class="ml-auto">
+          <router-link :to="link.path">
+            <v-btn color="white" icon>
+              <v-icon> mdi-cart-variant </v-icon>
+            </v-btn>
+          </router-link>
+        </div>
+      </template>
     </v-app-bar>
 
     <v-main>
@@ -22,17 +26,24 @@
 
 <script>
 import { CART, SHOWCASE, FAVORITE } from "./constants/page_path";
-import { LOAD_DATA } from "./constants/store_actions";
-
+import { mapActions } from "vuex";
 export default {
   name: "App",
-  data: () => ({
-    CART,
-    SHOWCASE,
-    FAVORITE,
-  }),
   created() {
-    this.$store.dispatch(LOAD_DATA);
+    this.loadData();
+  },
+  methods: {
+    ...mapActions({ loadData: "loadData" }),
+  },
+  computed: {
+    links() {
+      return [
+        { path: SHOWCASE, name: "Витрина" },
+        { path: CART, name: "Корзина" },
+        { path: FAVORITE, name: "Избранное" },
+        { path: CART, name: "КорзинаIcon", icon: "mdi-cart-variant" },
+      ];
+    },
   },
 };
 </script>

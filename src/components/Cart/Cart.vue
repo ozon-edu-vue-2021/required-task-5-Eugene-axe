@@ -14,7 +14,7 @@
 
         <v-list v-else>
           <cart-item
-            v-for="product in PRODUCTS_IN_CART"
+            v-for="product in productsInCart"
             :key="product.id"
             :product="product"
           ></cart-item>
@@ -25,13 +25,13 @@
           <v-btn color="primary" small @click="toggleOverlay"
             >Оформить заказ</v-btn
           >
-          <div>Общая сумма заказа : {{ TOTAL_SUM }}.00$</div>
+          <div>Общая сумма заказа : {{ totalSum }}.00$</div>
         </v-card>
       </div>
     </v-container>
     <my-overlay
       :overlay="showOverlay"
-      :products="PRODUCTS_IN_CART"
+      :products="productsInCart"
       @hideOverlay="toggleOverlay"
     ></my-overlay>
   </v-container>
@@ -41,8 +41,6 @@
 import CartItem from "./CartItem/CartItem.vue";
 import Overlay from "../Overlay/Overlay.vue";
 import { mapGetters, mapState } from "vuex";
-import { PRODUCTS_IN_CART, TOTAL_SUM } from "../../constants/store_getters";
-import { CART, PRODUCTS } from "../../constants/store_state";
 
 export default {
   name: "Cart",
@@ -67,10 +65,16 @@ export default {
     },
   },
   computed: {
-    ...mapState([CART, PRODUCTS]),
-    ...mapGetters([PRODUCTS_IN_CART, TOTAL_SUM]),
+    ...mapState({
+      cart: "cart",
+      products: "products",
+    }),
+    ...mapGetters({
+      productsInCart: "productsInCart",
+      totalSum: "totalSum",
+    }),
     isProductInCart() {
-      return !!this[PRODUCTS_IN_CART].length;
+      return !!this.productsInCart.length;
     },
   },
 };

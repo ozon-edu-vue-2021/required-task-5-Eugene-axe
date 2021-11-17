@@ -3,7 +3,7 @@
     <div class="text-h4 text-center mx-auto">{{ title }}</div>
     <v-container class="d-flex flex-wrap">
       <v-row>
-        <v-col v-for="product in PRODUCTS" :key="product.id" cols="4">
+        <v-col v-for="product in products" :key="product.id" cols="4">
           <Card :product="product" />
         </v-col>
       </v-row>
@@ -14,7 +14,6 @@
 <script>
 import Card from "../Card/Card.vue";
 import { mapState } from "vuex";
-import { PRODUCTS } from "../../constants/store_state";
 export default {
   name: "Showcase",
   components: {
@@ -32,7 +31,7 @@ export default {
     };
   },
   computed: {
-    ...mapState([PRODUCTS]),
+    ...mapState({ products: "products" }),
   },
 };
 </script>
